@@ -377,7 +377,7 @@ function updateService() {
     SERVICE_DESIREDCOUNT=`$AWS_ECS describe-services --cluster $CLUSTER --service $SERVICE | jq '.services[]|.desiredCount'`
     if [ $SERVICE_DESIREDCOUNT -gt 0 ]; then
         # See if the service is able to come up again
-        every=10
+        every=30
         i=0
         while [ $i -lt $TIMEOUT ]
         do
@@ -417,6 +417,7 @@ function updateService() {
                 fi
             fi
 
+            echo "Working on it... $(date)"
             sleep $every
             i=$(( $i + $every ))
         done
