@@ -443,7 +443,9 @@ function waitForGreenDeployment {
   while [ $i -lt $TIMEOUT ]
   do
     NUM_DEPLOYMENTS=$($AWS_ECS describe-services --services $SERVICE --cluster $CLUSTER | jq "[.services[].deployments[]] | length")
-
+    # this will echo date on every iteration of while, as long as timeout is less than PARAM TIMEOUT sec
+    # the job won't get killed by CCI
+    echo "Working on it... $(date)"
     # Wait to see if more than 1 deployment stays running
     # If the wait time has passed, we need to roll back
     if [ $NUM_DEPLOYMENTS -eq 1 ]; then
